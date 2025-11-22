@@ -164,7 +164,7 @@ export const Contact = () => {
                 className={`w-full bg-white/5 border ${
                   errors.email ? "border-red-400/50" : "border-white/10"
                 } rounded-xl px-4 py-3.5 text-white transition-all focus:outline-none focus:border-cyan-400 focus:bg-cyan-500/5 focus:ring-2 focus:ring-cyan-400/20 placeholder-gray-500`}
-                placeholder="your.email@example.com"
+                placeholder="rishi20020107@gmail.com"
                 onChange={(e) => handleInputChange("email", e.target.value)}
                 aria-invalid={errors.email ? "true" : "false"}
                 aria-describedby={errors.email ? "email-error" : undefined}
@@ -319,7 +319,7 @@ export const Contact = () => {
                     </a>
 
                     <a
-                      href="mailto:your.email@example.com"
+                      href="mailto:rishi20020107@gmail.com"
                       className="group flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-white/5 border border-white/10 hover:border-blue-400/50 hover:bg-blue-500/10 transition-all duration-300"
                     >
                       <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 shadow-lg group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
@@ -416,7 +416,7 @@ export const Contact = () => {
               </a>
 
               <a
-                href="mailto:your.email@example.com"
+                href="mailto:rishi20020107@gmail.com"
                 className="group w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:border-purple-400/50 hover:bg-purple-500/10 transition-all duration-300"
                 aria-label="Email"
               >
