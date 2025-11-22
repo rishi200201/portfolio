@@ -6,7 +6,6 @@ export const Contact = () => {
   const [status, setStatus] = useState(null); // success | error | loading
   const [errors, setErrors] = useState({});
 
-  // Form validation
   const validateForm = () => {
     const newErrors = {};
     
@@ -32,7 +31,6 @@ export const Contact = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Using backend submission (Nodemailer via server API). Adjust URL if deployed.
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -62,20 +60,17 @@ export const Contact = () => {
       setStatus("success");
       setFormData({ name: "", email: "", message: "" });
       
-      // Auto-hide success message after 5 seconds
       setTimeout(() => setStatus(null), 5000);
     } catch (err) {
       console.error("Contact form error:", err);
       setStatus("error");
       
-      // Auto-hide error message after 5 seconds
       setTimeout(() => setStatus(null), 5000);
     }
   };
 
   const handleInputChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
-    // Clear error for this field when user starts typing
     if (errors[field]) {
       setErrors({ ...errors, [field]: "" });
     }

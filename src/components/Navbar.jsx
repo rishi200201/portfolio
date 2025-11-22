@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export const Navbar = ({ menuOpen, setMenuOpen }) => {
   const [scrolled, setScrolled] = useState(false);
+  // visible controls whether the navbar is shown on small screens
+  const [visible, setVisible] = useState(true);
+  const lastY = useRef(0);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -9,15 +12,26 @@ export const Navbar = ({ menuOpen, setMenuOpen }) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      const y = window.scrollY;
+      setScrolled(y > 20);
+      
+      if (y <= 50) {
+        setVisible(true);
+      } else {
+        setVisible(y <= lastY.current);
+      }
+      lastY.current = y;
     };
-    window.addEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <nav
-      className={`fixed top-0 w-full z-40 transition-all duration-300 ${
+      className={`fixed top-0 w-full z-50 transform transition-transform duration-500 ease-out ${
+        !menuOpen && !visible ? "-translate-y-full" : "translate-y-0"
+      } ${
         scrolled
           ? "bg-[rgba(10, 10, 10, 0.95)] backdrop-blur-xl shadow-2xl"
           : "bg-[rgba(10, 10, 10, 0.7)] backdrop-blur-lg"
@@ -41,23 +55,23 @@ export const Navbar = ({ menuOpen, setMenuOpen }) => {
 
           {/* Hamburger Menu - Mobile */}
           <button
-            className="md:hidden w-10 h-10 relative cursor-pointer z-40 flex items-center justify-center text-white hover:text-blue-400 transition-colors duration-300"
+            className="md:hidden w-10 h-10 relative cursor-pointer z-50 flex items-center justify-center text-white hover:text-blue-400 active:scale-95 transition-all duration-300 ease-out"
             onClick={() => setMenuOpen((prev) => !prev)}
             aria-label="Toggle menu"
           >
             <div className="space-y-1.5">
               <span
-                className={`block w-6 h-0.5 bg-current transition-all duration-300 ${
+                className={`block w-6 h-0.5 bg-current transition-all duration-500 ease-out ${
                   menuOpen ? "rotate-45 translate-y-2" : ""
                 }`}
               ></span>
               <span
-                className={`block w-6 h-0.5 bg-current transition-all duration-300 ${
+                className={`block w-6 h-0.5 bg-current transition-all duration-500 ease-out ${
                   menuOpen ? "opacity-0" : ""
                 }`}
               ></span>
               <span
-                className={`block w-6 h-0.5 bg-current transition-all duration-300 ${
+                className={`block w-6 h-0.5 bg-current transition-all duration-500 ease-out ${
                   menuOpen ? "-rotate-45 -translate-y-2" : ""
                 }`}
               ></span>

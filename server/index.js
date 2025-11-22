@@ -20,12 +20,15 @@ app.get('/api/health', (req, res) => {
 app.post('/api/contact', async (req, res) => {
   const { name, email, message } = req.body || {};
 
-  if (!name || !email || !message) {
+  if (!name?.trim() || !email?.trim() || !message?.trim()) {
     return res.status(400).json({ error: 'Missing required fields.' });
   }
 
+  if (message.length > 1000) {
+    return res.status(400).json({ error: 'Message too long.' });
+  }
+
   try {
-    // Gmail transporter - uses app password stored in env
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -34,7 +37,6 @@ app.post('/api/contact', async (req, res) => {
       },
     });
 
-    // Thank you email to user
     const userMail = await transporter.sendMail({
       from: `Rishi Portfolio <${process.env.GMAIL_ADDRESS}>`,
       to: email,
@@ -42,7 +44,6 @@ app.post('/api/contact', async (req, res) => {
       text: `Hi ${name},\n\nThanks for contacting me. I received your message:\n\n"${message}"\n\nI will get back to you soon.\n\nRegards,\nRishi`,
     });
 
-    // Optional copy to owner
     if (process.env.SEND_OWNER_COPY === 'true') {
       await transporter.sendMail({
         from: `Rishi Portfolio <${process.env.GMAIL_ADDRESS}>`,
