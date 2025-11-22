@@ -42,20 +42,13 @@ export const Contact = () => {
     setErrors({});
     
     try {
-      const apiUrl = import.meta.env.PROD 
-        ? "/api/contact" 
-        : "http://localhost:3001/api/contact";
+      // Format message for WhatsApp
+      const whatsappMessage = `Hi Rishi,\n\nI'm ${formData.name}\n\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`;
+      const encodedMessage = encodeURIComponent(whatsappMessage);
+      const whatsappUrl = `https://wa.me/918248568354?text=${encodedMessage}`;
       
-      const res = await fetch(apiUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.error || "Request failed");
-      }
+      // Open WhatsApp in a new tab
+      window.open(whatsappUrl, '_blank');
       
       setStatus("success");
       setFormData({ name: "", email: "", message: "" });
@@ -243,8 +236,8 @@ export const Contact = () => {
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
                 <div>
-                  <p className="text-green-300 font-bold">Message sent successfully!</p>
-                  <p className="text-green-300/80 text-sm mt-1">Thank you for reaching out. I'll get back to you soon!</p>
+                  <p className="text-green-300 font-bold">Redirecting to WhatsApp!</p>
+                  <p className="text-green-300/80 text-sm mt-1">Your message is ready. Complete sending via WhatsApp!</p>
                 </div>
               </div>
             )}
@@ -256,7 +249,7 @@ export const Contact = () => {
                 </svg>
                 <div>
                   <p className="text-red-300 font-bold">Oops! Something went wrong.</p>
-                  <p className="text-red-300/80 text-sm mt-1">Please try again later or contact me directly via WhatsApp.</p>
+                  <p className="text-red-300/80 text-sm mt-1">Please try again or contact me directly via WhatsApp below.</p>
                 </div>
               </div>
             )}
